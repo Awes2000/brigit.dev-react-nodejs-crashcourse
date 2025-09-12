@@ -4,11 +4,12 @@ import { FaMapMarker } from "react-icons/fa";
 const JobListing = ({ job }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
 
-  let description = job.description;
+  // Guard: if job is missing, don’t render anything yet
+  if (!job) return null;
 
-  if (!showFullDescription) {
-    description = description.substring(0, 90) + "...";
-  }
+  // Create a trimmed description
+  const shortText = job.description?.substring(0, 90) + "...";
+  const description = showFullDescription ? job.description : shortText;
 
   return (
     <div key={job.id} className="bg-white rounded-xl shadow-md relative">
@@ -21,7 +22,7 @@ const JobListing = ({ job }) => {
         <div className="mb-5">{description}</div>
 
         <button
-          onClick={() => setShowFullDescription((prevState) => !prevState)}
+          onClick={() => setShowFullDescription((prev) => !prev)}
           className="text-indigo-500 mb-5 hover:text-indigo-600"
         >
           {showFullDescription ? "Less" : "More"}
